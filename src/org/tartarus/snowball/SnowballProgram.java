@@ -40,7 +40,12 @@ public class SnowballProgram implements Serializable {
      */
     public String getCurrent()
     {
-        return current.toString();
+		//This is a bad way of doing it.
+		String string = current.toString();
+		//Use RE to remove all non-words
+		String result = string.replaceAll("\\W", "");
+		//Give the result back
+		return result;
     }
 
     // current string

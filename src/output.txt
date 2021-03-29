@@ -1,4 +1,4 @@
-likewise,
+likewise
 covert
 world
 agenc
@@ -12,14 +12,14 @@ legal
 conduct
 of
 their
-work.
-oppositely,
+work
+oppositely
 hack
 and
-cyber-attack
+cyberattack
 are
 use
-extra-
+extra
 and
 illeg
 by
@@ -28,9 +28,9 @@ enforc
 and
 secur
 agenc
-(conduct
+conduct
 warrantless
-activities),
+activities
 and
 employ
 by
