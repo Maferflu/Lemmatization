@@ -60,6 +60,7 @@ private final static Among a_4[] = {
     new Among("ingly", -1, 2)
 };
 
+//STEP 2
 private final static Among a_5[] = {
     new Among("anci", -1, 3),
     new Among("enci", -1, 2),
@@ -87,6 +88,7 @@ private final static Among a_5[] = {
     new Among("ousness", -1, 10)
 };
 
+//STEP 3
 private final static Among a_6[] = {
     new Among("icate", -1, 4),
     new Among("ative", -1, 6),
@@ -99,6 +101,7 @@ private final static Among a_6[] = {
     new Among("ness", -1, 5)
 };
 
+//STEP 4: remove suffixes
 private final static Among a_7[] = {
     new Among("ic", -1, 1),
     new Among("ance", -1, 1),
@@ -369,11 +372,13 @@ private boolean r_R2() {
     return true;
 }
 
+//Step1a
 private boolean r_Step_1a() {
     int among_var;
     int v_1 = limit - cursor;
     lab0: {
         ket = cursor;
+        //delete 's
         if (find_among_b(a_1) == 0)
         {
             cursor = limit - v_1;
@@ -383,6 +388,7 @@ private boolean r_Step_1a() {
         slice_del();
     }
     ket = cursor;
+    //transform 'sses' 'ies' 'ss' 's'
     among_var = find_among_b(a_2);
     if (among_var == 0)
     {
@@ -898,6 +904,8 @@ public boolean stem() {
         limit_backward = cursor;
         cursor = limit;
         int v_5 = limit - cursor;
+        
+        //start of the processing with steps
         r_Step_1a();
         cursor = limit - v_5;
         lab4: {

@@ -43,6 +43,7 @@ public class SnowballProgram implements Serializable {
 		//This is a bad way of doing it.
 		String string = current.toString();
 		//Use RE to remove all non-words
+                //replace the characters apart from [a-zA-Z0-9_]. If you want to replace the underscore too, then use: [\\W_]
 		String result = string.replaceAll("\\W", "");
 		//Give the result back
 		return result;
