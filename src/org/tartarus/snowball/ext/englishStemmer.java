@@ -160,6 +160,54 @@ private final static Among a_10[] = {
     new Among("ugly", -1, 8)
 };
 
+//---   NEW
+//StopWords
+//Prepositions
+  //TIME
+private final static Among a_11[] = {
+  new Among("on", -1, 1),
+  new Among("in", -1, 2),
+  new Among("at", -1, 3),
+  new Among("since", -1, 4),
+  new Among("for", -1, 5),
+  new Among("ago", -1, 6),
+  new Among("before", -1, 7),
+  new Among("to", -1, 8),
+  new Among("past", -1, 9),
+  new Among("til", -1, 1),
+  new Among("until", -1, 2),
+  new Among("by", -1, 3),
+  new Among("but", -1, 4),
+};
+
+  //PLACE
+private final static Among a_12[] = {
+  new Among("next", -1, 14),
+  new Among("besid", -1, 15),
+  new Among("under", -1, 16),
+  new Among("below", -1, 17),
+  new Among("over", -1, 18),
+  new Among("abov", -1, 19),
+  new Among("across", -1, 13),
+  new Among("through", -1, 12),
+  new Among("into", -1, 11),
+  new Among("toward", -1, 10),
+  new Among("onto", -1, 10),
+  new Among("from", -1, 11),
+};
+
+  //OTHERS
+private final static Among a_13[] = {
+  new Among("of", -1, 26),
+  new Among("off", -1, 27),
+  new Among("as", -1, 28),
+  new Among("the", -1, 29),
+  new Among("likewis", -1, 20),
+  new Among("out", -1, 21),
+  new Among("a", -1, 22),
+  new Among("and", -1, 23)
+};
+
 private static final char g_v[] = {17, 65, 16, 1 };
 
 private static final char g_v_WXY[] = {1, 17, 65, 208, 1 };
@@ -831,6 +879,57 @@ private boolean r_exception1() {
     return true;
 }
 
+//---   NEW
+private boolean r_stopwords() {
+    int among_var;
+    int i=0;//ket-limit;
+    ket = cursor;
+    //initial character ket-limit
+    //last character ket-1
+    //debug purposes
+    //System.out.print("a"+ket);
+    /*while(ket-1 >= i)
+    {
+        //System.out.print(i);
+        System.out.print(current.charAt(i));
+        i++;
+    }
+    System.out.println();
+    //*/
+    //System.out.println(limit + "\t" + cursor);
+    among_var = find_among_b2(a_11);
+    //System.out.println(limit + "\t" + cursor);
+
+    if (among_var == 0)
+    {
+        among_var = find_among_b2(a_12);
+        //System.out.println(limit + "\t" + cursor);
+
+        if (among_var == 0)
+        {
+            among_var = find_among_b2(a_13);
+          //  System.out.println(limit + "\t" + cursor);
+
+            if (among_var == 0)
+            {
+                return false;
+            }
+        }
+    }
+    //System.out.println(limit + "\t" + cursor);    
+    //System.out.println("Welcome to StopWords no."+ among_var);
+    /*cursor = limit - v_3;
+    ket = cursor;
+    if (cursor <= limit_backward)
+    {
+        return false;
+    }
+    cursor--;
+    bra = cursor;
+    slice_del();*/
+    return true;
+}
+
 private boolean r_postlude() {
     if (!(B_Y_found))
     {
@@ -870,6 +969,8 @@ private boolean r_postlude() {
 }
 
 public boolean stem() {
+    int i=0;
+    //System.out.println();
     lab0: {
         int v_1 = cursor;
         lab1: {
@@ -880,6 +981,7 @@ public boolean stem() {
             break lab0;
         }
         cursor = v_1;
+        /*Avoids processing prepositions
         lab2: {
             {
                 int v_2 = cursor;
@@ -897,15 +999,17 @@ public boolean stem() {
                 cursor = v_2;
             }
             break lab0;
-        }
+        }*/
         cursor = v_1;
         r_prelude();
         r_mark_regions();
         limit_backward = cursor;
         cursor = limit;
-        int v_5 = limit - cursor;
-        
+       // System.out.println();
         //start of the processing with steps
+        //---   NEW
+        //v is the lenght of the string that is still stored
+        int v_5 = limit - cursor;
         r_Step_1a();
         cursor = limit - v_5;
         lab4: {
@@ -936,12 +1040,29 @@ public boolean stem() {
             int v_12 = limit - cursor;
             r_Step_5();
             cursor = limit - v_12;
+            /*while(limit-1 >= i)
+            {
+                //System.out.print(i);
+                System.out.print(current.charAt(i));
+                i++;
+            }
+            System.out.println();*/
+            if(r_stopwords()) 
+            {
+                //System.out.println(":K");
+                cursor = 0;
+                current.setCharAt(0, '.');
+                current.replace(1, current.length(), "");
+                limit = 1;
+            }
         }
         cursor = limit_backward;
         int v_13 = cursor;
         r_postlude();
         cursor = v_13;
     }
+    //System.out.print(current.charAt(limit-1)+"\t");
+    //System.out.println(current.charAt(cursor));
     return true;
 }
 

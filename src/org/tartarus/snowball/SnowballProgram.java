@@ -2,6 +2,7 @@
 package org.tartarus.snowball;
 import java.lang.reflect.InvocationTargetException;
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class SnowballProgram implements Serializable {
     protected SnowballProgram()
@@ -31,7 +32,9 @@ public class SnowballProgram implements Serializable {
         // the buffer size will not decrease, and we will risk wasting a large
         // amount of memory.
         // Thanks to Wolfram Esser for spotting this problem.
-        current = new StringBuilder(value);
+        //The non-alphabetic characters are removed at the begining, AFTER processing the string
+        String newvalue = value.replaceAll("\\W", "");
+        current = new StringBuilder(newvalue);
 	init();
     }
 
@@ -40,6 +43,7 @@ public class SnowballProgram implements Serializable {
      */
     public String getCurrent()
     {
+                //The non-alphabetic characters are removed at the end, AFTER processing the string
 		//This is a bad way of doing it.
 		String string = current.toString();
 		//Use RE to remove all non-words
@@ -227,7 +231,7 @@ public class SnowballProgram implements Serializable {
     // find_among_b is for backwards processing. Same comments apply
     protected int find_among_b(Among v[])
     {
-	int i = 0;
+      	int i = 0;
 	int j = v.length;
 
 	int c = cursor;
@@ -290,6 +294,41 @@ public class SnowballProgram implements Serializable {
 	    i = w.substring_i;
 	    if (i < 0) return 0;
 	}
+    }
+    
+    //---   NEW
+    //Finds equal strings
+    protected int find_among_b2(Among v[])
+    {
+      	int i = 0;
+        int k = 0;
+	int j = v.length;
+        Among w = v[i];
+        boolean flag=false;
+        
+	while ((i<j)&&(!flag))
+        {           
+            while((current.charAt(k) == v[i].s[k]) && (k < v[i].s.length-1) && (k < limit-1))
+            {
+                //System.out.println(current.charAt(k) + "\t\t" + v[i].s[k] + "\t"+ (limit-1)+"\t"+ (v[i].s.length-1) + "\t" + k);
+                k++;
+            }
+            //System.out.println(k);
+            if((k == v[i].s.length-1) && (limit==v[i].s.length) &&(current.charAt(k) == v[i].s[k]))
+            {
+                flag = true;
+                //System.out.println(current.charAt(k) + "\t\t" + v[i].s[k] + "\t"+ (limit-1)+"\t"+ (v[i].s.length-1) + "\t" + k);
+            }
+            k=0;
+            i++;
+        }
+	if (flag)
+        {
+            cursor = 0;
+            return v[i-1].result;
+        }
+        else
+            return 0;
     }
 
     /* to replace chars between c_bra and c_ket in current by the
