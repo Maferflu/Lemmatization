@@ -95,7 +95,11 @@ public class TestApp {
 		stemmer.setCurrent(input.toString());
 		stemmer.stem();
 		output.write(stemmer.getCurrent());
-		output.write('\n');
+                //to delete blank spaces left by the prepositions
+                if(stemmer.getCurrent() != null && !stemmer.getCurrent().trim().isEmpty())
+                {
+                    output.write('\n');   
+                }
 		input.delete(0, input.length());
 	    } 
             //if the word has not finished yet
