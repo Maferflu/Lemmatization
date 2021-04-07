@@ -208,6 +208,31 @@ private final static Among a_13[] = {
   new Among("and", -1, 23)
 };
 
+//---   NEW
+//Irregular verbs
+private final static Among a_14[] = {
+  //BE
+  new Among("was", -1, 1),
+  new Among("were", -1, 1),
+  new Among("been", -1, 1),
+  //BECOME
+  new Among("became", -1, 2),
+  //BEGIN
+  new Among("began", -1, 3),
+  new Among("begun", -1, 3),
+  //BREAK
+  new Among("broke", -1, 4),
+  new Among("broken", -1, 4),
+  //KNOW
+  new Among("knew", -1, 5),
+  new Among("known", -1, 5),
+  //HAVE
+  new Among("had", -1, 6),
+  //WRITE
+  new Among("wrote", -1, 7),
+  new Among("written", -1, 7)
+};
+
 private static final char g_v[] = {17, 65, 16, 1 };
 
 private static final char g_v_WXY[] = {1, 17, 65, 208, 1 };
@@ -897,10 +922,16 @@ private boolean r_stopwords() {
     System.out.println();
     //*/
     //System.out.println(limit + "\t" + cursor);
+    
+    //BUG
+    //A blank space ruins the program
     among_var = find_among_b2(a_11);
+    
     //System.out.println(limit + "\t" + cursor);
 
     if (among_var == 0)
+    {
+        if (among_var == 0)
     {
         among_var = find_among_b2(a_12);
         //System.out.println(limit + "\t" + cursor);
@@ -916,6 +947,7 @@ private boolean r_stopwords() {
             }
         }
     }
+    }
     //System.out.println(limit + "\t" + cursor);    
     //System.out.println("Welcome to StopWords no."+ among_var);
     /*cursor = limit - v_3;
@@ -927,6 +959,69 @@ private boolean r_stopwords() {
     cursor--;
     bra = cursor;
     slice_del();*/
+    return true;
+}
+
+private boolean irreg_verb() {
+    int among_var;
+    int i=0;//ket-limit;
+    ket = cursor;
+    among_var = find_among_b2(a_14);  
+
+    if (among_var == 0)
+    {
+        return false;
+    }
+    else
+    {
+        //Debug 
+        //System.out.println(current + "\t"+ current.length());
+        switch(among_var)
+        {
+            case 1: 
+                current.replace(0, 1, "be");
+                current.replace(2, current.length(), "");
+                //be
+                break;
+            case 2:
+                current.setCharAt(3, 'o');
+                //become
+                break;
+            case 3:
+                current.setCharAt(3, 'i');                
+                //begin
+                break;
+            case 4:
+                //0b1r2o3k4e5n
+                current.replace(2, 4, "eak");
+                current.replace(5, current.length(), " ");
+                //break*/
+                break;
+            case 5:
+                //0k1n2o3w4n
+                current.setCharAt(2, 'o');
+                if(current.length()==5)
+                {
+                    current.setCharAt(4, ' ');
+                }
+                //know
+                break;
+            case 6:
+                current.setCharAt(2, 'v');
+                current.append('e');
+                //have
+                break;
+            case 7:
+                current.setCharAt(2, 'i');
+                current.setCharAt(4, 'e');
+                if(current.length()>4)
+                {
+                    current.replace(5, current.length(),"");
+                }
+                //write
+                break;       
+        }
+    }
     return true;
 }
 
@@ -1055,6 +1150,7 @@ public boolean stem() {
                 current.replace(1, current.length(), "");
                 limit = 1;
             }
+            irreg_verb();
         }
         cursor = limit_backward;
         int v_13 = cursor;
