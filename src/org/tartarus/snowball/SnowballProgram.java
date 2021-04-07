@@ -331,6 +331,54 @@ public class SnowballProgram implements Serializable {
             return 0;
     }
 
+    //---   NEW
+    //Finds equal strings
+    protected int find_among_b3(Among v[])
+    {
+      	int i = 0;
+        int k = current.length()-1;
+        int c;
+	int j = v.length-1;
+        Among w = v[i];
+        c = v[i].s.length;
+        c--;
+        boolean flag=false;
+        
+	while ((i<j)&&(!flag))
+        {           
+            //System.out.println(k+"\t"+current.charAt(k)+"\t"+c+"\t"+v[i].s[c]);
+            while((current.charAt(k) == v[i].s[c]) && (c > 0))//< v[i].s.length-1) && (k < limit-1))
+            {
+                //System.out.println(current.charAt(k) + "\t\t" + v[i].s[c] + "\t"+ (limit-1)+"\t"+ (v[i].s.length-1) + "\t" + k);
+                k--;
+                c--;
+            }
+            //System.out.println(current.length()+"\t"+current);
+            //System.out.println(v[i].s.length);
+            if(current.charAt(k) == v[i].s[c])//((k == v[i].s.length-1) && (limit==v[i].s.length) &&(current.charAt(k) == v[i].s[k]))
+            {
+                flag = true;
+                //System.out.println(current.charAt(k) + "\t\t" + v[i].s[k] + "\t"+ (limit-1)+"\t"+ (v[i].s.length-1) + "\t" + k);
+            }
+            if(i<j)
+            {
+                c = v[i+1].s.length-1;
+                k=current.length()-1;
+                //System.out.println(k+"\t"+current.charAt(k)+"\t"+c+"\t"+v[i+1].s[c]);
+                //System.out.println(j+"\tFIN\t"+i);
+            }
+            i++;
+        }
+	if (flag)
+        {
+            //cursor = 0;
+            return v[i-1].result;
+        }
+        else
+            return 0;
+    }
+    
+    
     /* to replace chars between c_bra and c_ket in current by the
      * chars in s.
      */

@@ -233,6 +233,40 @@ private final static Among a_14[] = {
   new Among("written", -1, 7)
 };
 
+//---   NEW
+//Latinisms endings (9+2)
+//https://www.dailywritingtips.com/latin-plural-endings/
+private final static Among a_15[] = {
+  //A (managed by snowball)
+  //EX
+  new Among("exes", -1, 1), //(managed)
+  //new Among("ices", 9, 1), cannot be managed it is same as IX
+  //EAU
+  new Among("eaux", -1, 2),
+  new Among("eaus", -1, 2),
+  //ION
+  new Among("ia", -1, 3),
+  //IS
+  new Among("es", -1, 4),
+  //IX
+  new Among("ixes", -1, 5),
+  //new Among("ices", -1, 5), cannot be managed it is  same as EX
+  //O
+  new Among("os", -1, 6),
+  //new Among("i", -1, 6),
+  new Among("oes", -1, 6),
+  //OO (managed by snowball)
+  //UM
+  //new Among("a", -1, 7), cannot be managed, it is the same as ON
+  //new Among("ums", -1, 7), //managed
+  //US
+  new Among("uses", -1, 8), 
+  //new Among("i", -1, 8), //cannot be managed it is the same as ON
+  //ON
+  //new Among("a", -1, 9) cannot be managed, it is the same as UM
+  //new Among("i", -1, 9) //cannot be managed it is the same as US
+};
+
 private static final char g_v[] = {17, 65, 16, 1 };
 
 private static final char g_v_WXY[] = {1, 17, 65, 208, 1 };
@@ -1025,6 +1059,71 @@ private boolean irreg_verb() {
     return true;
 }
 
+private boolean latin() {
+    //affects nouns
+    int among_var;
+    ket = cursor;
+    among_var = find_among_b3(a_15);  
+    System.out.println(current + "\t"+ current.length() + "\t" +among_var);
+    bra = cursor;
+    if (among_var == 0)
+    {
+        return false;
+    }
+    else
+    {
+        //Debug 
+        System.out.println(current + "\t"+ current.length());
+        switch(among_var)
+        {
+            //EX
+            /*case 1: 
+                current.replace(current.length()-4, current.length()-2, "ex");
+                current.replace(current.length()-2, current.length()-0, "");
+                break;//*/
+            //EAU
+            case 2:
+                current.deleteCharAt(current.length()-1);
+                break;
+            //ION
+            case 3:
+                current.setCharAt(current.length()-1, 'o');
+                current.append('n');
+                //begin
+                break;
+             //IS
+            case 4:
+                //es
+                //do not operates because this words lose the final s
+                //current.setCharAt(current.length()-2, 'i');
+                break;
+            //IX
+            case 5:
+                //ixes
+                slice_from("ix");
+                break;
+            //O
+            case 6:
+                //os
+                //oes
+                break;
+            //UM
+            case 7:
+                
+                break; 
+            //US
+            case 8:
+                //uses
+                slice_from("us");
+                break; 
+            //ON
+            case 9:
+                break; 
+        }
+    }
+    return true;
+}
+
 private boolean r_postlude() {
     if (!(B_Y_found))
     {
@@ -1103,7 +1202,12 @@ public boolean stem() {
        // System.out.println();
         //start of the processing with steps
         //---   NEW
-        //v is the lenght of the string that is still stored
+        //v is the lenght of the string that is still stored        
+        /*int v_20 = limit - cursor;    
+        if (latin()) 
+            return true;
+        cursor = limit - v_20;*/
+        
         int v_5 = limit - cursor;
         r_Step_1a();
         cursor = limit - v_5;
@@ -1151,6 +1255,7 @@ public boolean stem() {
                 limit = 1;
             }
             irreg_verb();
+            latin();
         }
         cursor = limit_backward;
         int v_13 = cursor;
