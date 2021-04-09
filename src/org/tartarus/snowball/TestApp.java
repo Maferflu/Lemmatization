@@ -83,16 +83,25 @@ public class TestApp {
 
 	StringBuffer input = new StringBuffer();
 	int character;
+        int count = 0;
 	//while the buffer has information
         //Read the next byte of data
-        while ((character = reader.read()) != -1) {
-	    //Convert the byte into a character
+        while (count==0){//To read the last string of the document((character = reader.read()) != -1) {
+            character = reader.read();
+            //Convert the byte into a character
             char ch = (char) character;
+            //To read the last string of the document
+            if(character == -1)
+            {
+                input.setCharAt(input.length()-1, ' ');
+                ch = (char) ' ';
+                count++;
+            }
             //if there is a whitespace the word has finished
             //the word is sent to the stemmer and processed
             //the result of this process is written on the output file
 	    if (Character.isWhitespace(ch)) {
-		stemmer.setCurrent(input.toString());
+                stemmer.setCurrent(input.toString());
 		stemmer.stem();
 		output.write(stemmer.getCurrent());
                 //to delete blank spaces left by the prepositions
@@ -109,6 +118,7 @@ public class TestApp {
                 input.append(ch < 127 ? Character.toLowerCase(ch) : ch);
 	    }
 	}
+
         //Empty Buffers
 	output.flush();
     }

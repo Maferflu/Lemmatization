@@ -205,7 +205,8 @@ private final static Among a_13[] = {
   new Among("likewis", -1, 20),
   new Among("out", -1, 21),
   new Among("a", -1, 22),
-  new Among("and", -1, 23)
+  new Among("and", -1, 23),
+  new Among("their", -1, 24)
 };
 
 //---   NEW
@@ -230,7 +231,11 @@ private final static Among a_14[] = {
   new Among("had", -1, 6),
   //WRITE
   new Among("wrote", -1, 7),
-  new Among("written", -1, 7)
+  new Among("written", -1, 7),
+  //GIVE
+  new Among ("given", -1, 8),
+  new Among ("gave", -1, 8),
+  
 };
 
 //---   NEW
@@ -1054,6 +1059,14 @@ private boolean irreg_verb() {
                 }
                 //write
                 break;       
+            case 8:
+                current.setCharAt(1, 'i');
+                if(current.length()>4)
+                {
+                    current.replace(4, current.length(),"");
+                }
+                //give
+                break;       
         }
     }
     return true;
@@ -1064,7 +1077,7 @@ private boolean latin() {
     int among_var;
     ket = cursor;
     among_var = find_among_b3(a_15);  
-    System.out.println(current + "\t"+ current.length() + "\t" +among_var);
+    //System.out.println(current + "\t"+ current.length() + "\t" +among_var);
     bra = cursor;
     if (among_var == 0)
     {
@@ -1073,7 +1086,7 @@ private boolean latin() {
     else
     {
         //Debug 
-        System.out.println(current + "\t"+ current.length());
+        //System.out.println(current + "\t"+ current.length());
         switch(among_var)
         {
             //EX
@@ -1245,7 +1258,7 @@ public boolean stem() {
                 System.out.print(current.charAt(i));
                 i++;
             }
-            System.out.println();*/
+            System.out.println();//*/
             if(r_stopwords()) 
             {
                 //System.out.println(":K");
